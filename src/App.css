@@ -1,0 +1,229 @@
+header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 80px;
+width: 100%;
+}
+
+body{
+
+  /* background-color: #f2d5bd; */
+overflow-X: hidden;
+}
+
+.headercontainer{
+  width: 100vw;
+display: flex;
+align-items: center;
+justify-content: center;
+position: fixed;
+backdrop-filter: blur(5px);
+width: 100%;
+box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.07);
+background-color: rgba(255, 255, 255, 0.468);
+z-index: 10;
+}
+.center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+header img{
+max-width: 80px;
+height: auto;
+}
+header .icon{
+  font-size: 30px;
+  cursor: pointer;
+  color: #1f2730;
+}
+.mainsection{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.mainsectioncontent{
+  padding: 100px;
+  font-family: "BBH Sans Hegarty","sans-serif";
+  width: 98vw;
+
+}
+.mainsectioncontent h2{
+  font-size: 40px;
+    color: #1f2730;
+
+}
+.mainsectioncontent h1{
+    line-height: 0.8;
+  font-size: 100px;
+
+}
+.Productslider{
+  display: flex;
+  width: 100%;
+  overflow-y: auto;
+  gap: 5px;
+  padding: 10px 10px 10px 50px;
+
+}
+.maxw{
+  max-width: 1380px;
+
+}
+.Productslider::-webkit-scrollbar {
+  display: none;
+}
+.slider{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100vw;
+  
+}
+.product{
+  height: 400px;
+  min-width: 280px;
+  width: 280px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 0 10px 0 10px;
+transition: 0.3s ease all;
+cursor: pointer;
+
+}
+
+
+.product h5{
+  display: flex;
+  position: relative;
+}
+
+.product h5,.product p{
+  padding: 0px 15px;
+  text-align: left;
+  width: 100%;
+  margin: 0;
+  font-weight: bold;
+}
+.mainsectioncontent button{
+  padding: 10px 30px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+  backdrop-filter: blur(5px);
+font-size: 40px;
+gap: 15px;
+display: flex;
+align-items: center;
+border-radius: 10px;
+transition: 0.3s ease all;
+}
+.mainsectioncontent button:hover{
+  padding: 10px 30px;
+  border: none;
+  background-color: #f2d5bd0f;
+  color: white;
+  backdrop-filter: blur(5px);
+font-size: 41px;
+gap: 15px;
+display: flex;
+align-items: center;
+border-radius: 10px;
+transform: rotate(-1deg);
+}
+.product .imgcontainer{
+width: 100%;
+  max-height: 70%;
+  min-height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  overflow: hidden;
+}
+.product .imgcontainer img{
+width: 100%;
+min-width: 100%;
+height: 100%;
+transition: 0.3s ease all;
+object-fit: cover;
+}
+.startinganimation {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2d5bd;
+  z-index: 100;
+  animation: fadeOutBg 0.8s ease-in-out forwards 1.3s;
+}
+
+.startinganimation .imgcontainer {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  animation: revealOverflow 1.3s forwards;
+}
+
+.startinganimation img {
+  width: 200px;
+  height: 200px;
+
+  animation: slide_and_rotate 2.5s ease-in-out infinite;
+}
+
+@keyframes slide_and_rotate {
+  0% {
+    transform: translateY(-200px) rotate(0deg);
+  }
+
+  20% {
+    transform: translateY(0) rotate(0deg); 
+  }
+
+  60% {
+    transform: translateY(0) rotate(360deg); 
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+ 
+@keyframes revealOverflow {
+  0% { overflow: hidden; }
+  40% { overflow: hidden; } /* keep hidden during slide */
+  100% { overflow: visible; }
+}
+
+/* Background fade */
+@keyframes fadeOutBg {
+  0% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+.signinwithgoogle{
+  transition: 0.3s ease all;
+  background-color: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.297);
+  width: 100%;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 15px;
+}
+.signinwithgoogle p{
+  margin: 0;
+  font-size: 15px;
+}
+.signinwithgoogle:hover{
+  background-color: rgb(234, 234, 234) !important;
+}
