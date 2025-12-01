@@ -162,20 +162,30 @@ object-fit: cover;
   justify-content: center;
   background-color: #f2d5bd;
   z-index: 100;
-  animation: fadeOutBg 0.8s ease-in-out forwards 1.3s;
+  opacity: 0;
+  transition: 0.2s ease all;
+  pointer-events: none;
 }
+.startinganimation.active{
+  opacity: 1;
+    pointer-events: all;
 
+}
 .startinganimation .imgcontainer {
   width: 200px;
   height: 200px;
   overflow: hidden;
-  animation: revealOverflow 1.3s forwards;
 }
 
 .startinganimation img {
   width: 200px;
   height: 200px;
+}
+.startinganimation .imgcontainer.active{
+  animation: revealOverflow 1.3s forwards;
+}
 
+.startinganimation.active  img {
   animation: slide_and_rotate 2.5s ease-in-out infinite;
 }
 
@@ -226,4 +236,8 @@ object-fit: cover;
 }
 .signinwithgoogle:hover{
   background-color: rgb(234, 234, 234) !important;
+}
+.navlink{
+  color: inherit;
+  text-decoration: inherit;
 }

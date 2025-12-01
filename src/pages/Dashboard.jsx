@@ -109,8 +109,39 @@ console.log(Banners)
   const handleAddOrEditProduct = async (e) => {
     e.preventDefault();
 
-    if (!newProduct.name || !newProduct.price || !newProduct.category) {
-      alert("Please fill name, price, and category.");
+    if (!newProduct.name ) {
+      alert("Please fill name");
+      return;
+    }
+
+
+if(newProduct.category === 'Frames'){
+ if ( !newProduct.smallframeprice ) {
+      alert("Please fill 20*30 price");
+      return;
+    }
+     if ( !newProduct.bigframeprice ) {
+      alert("Please fill 30*40 price");
+      return;
+    }
+     if ( !newProduct.subdomain ) {
+      alert("Please fill sub Category");
+      return;
+    }
+
+}
+
+else if(newProduct.category !== 'Frames'){
+     if (!newProduct.price ) {
+      alert("Please fill price");
+      return;
+    }
+}
+
+
+
+ if (!newProduct.category) {
+      alert("Please fill category");
       return;
     }
 
@@ -313,9 +344,25 @@ const handleEditBanner = (banner) => {
 
 useEffect(() => {
   const loadSubdomains = async () => {
-    const snap = await getDocs(collection(db, "Subdomains"));
-    setSubdomains(snap.docs.map((d) => d.data().name)); // assuming field name is "name"
+    const snap = await getDocs(collection(db, "Products"));
+
+    const all = [];
+
+    snap.docs.forEach((doc) => {
+      const data = doc.data();
+
+      // only frame products have subdomains
+      if (data.category === "Frames" && data.subdomain) {
+        all.push(data.subdomain);
+      }
+    });
+
+    // remove duplicates
+    const unique = [...new Set(all)];
+
+    setSubdomains(unique);
   };
+
   loadSubdomains();
 }, []);
 
@@ -379,10 +426,12 @@ useEffect(() => {
                         <p className=" mb-0 text-muted">
                           {p.category || <em>No category</em>}
                         </p>
-                          <p className="text-muted ms-1">
+                        {p.category === 'Frames' ?  <p className="text-muted ms-1">
                           - {p.subdomain || <em>No Sub Category</em>}
-                        </p>
-                        <p className="fw-bold">EGP {p.price}</p>
+                        </p> : <></>}
+                         {p.category === 'Frames' ? <p className="fw-bold">EGP {p.smallframeprice}</p> :       
+            <p className="fw-bold">EGP {p.price}</p>
+}
                         <Button
                           variant="warning"
                           size="sm"
@@ -546,42 +595,90 @@ useEffect(() => {
           </div>
         )}
 
-        {/* CATEGORIES TAB */}
+
+
+
         {activeTab === "categories" && (
-          <>
-            <Button onClick={handleAddCategory}>Add Category</Button>
-            <ul className="list-group mt-3">
-              {categories.length ? (
-                categories.map((c) => (
-                  <li
-                    key={c.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
+  <>
+    <Button onClick={handleAddCategory}>Add Category</Button>
+
+    <ul className="list-group mt-3">
+      {categories.length ? (
+        categories.map((c) => {
+
+          return (
+            <li key={c.id} className="list-group-item">
+              <div className="d-flex justify-content-between align-items-center">
+                <strong>{c.Category}</strong>
+
+                <div>
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => handleEditCategory(c)}
                   >
-                    {c.Category}
-                    <div>
-                      <Button
-                        variant="outline-secondary"
-                        size="sm"
-                        onClick={() => handleEditCategory(c)}
-                      >
-                        Edit
-                      </Button>{" "}
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => handleRemoveCategory(c)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <p>No categories found.</p>
+                    Edit
+                  </Button>{" "}
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => handleRemoveCategory(c)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </div>
+
+              {/* SUBDOMAINS SECTION */}
+              {c.Category === "Frames" && (
+                <div className="mt-2 ms-3">
+                  {subdomains.length ? (
+                    <ul className="list-group">
+                      {subdomains.map((sd) => (
+                        <li
+                          key={sd}
+                          className="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          {sd}
+
+                          <div>
+                            <Button
+                              variant="outline-secondary"
+                              size="sm"
+                              onClick={() => handleEditCategory(sd)}
+                            >
+                              Edit
+                            </Button>{" "}
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
+                              onClick={() => handleRemoveCategory(sd)}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <em className="text-muted">No subdomains found.</em>
+                  )}
+                </div>
               )}
-            </ul>
-          </>
-        )}
+            </li>
+          );
+        })
+      ) : (
+        <p>No categories found.</p>
+      )}
+    </ul>
+  </>
+)}
+
+
+
+
+
       </div>
 
       {/* Add/Edit Product Modal */}
@@ -612,7 +709,7 @@ useEffect(() => {
                 }
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            {newProduct.category === "Frames" ?  <></> :   <Form.Group className="mb-3">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
@@ -621,7 +718,8 @@ useEffect(() => {
                   setNewProduct((prev) => ({ ...prev, price: e.target.value }))
                 }
               />
-            </Form.Group>
+            </Form.Group>}
+           
             <Form.Group className="mb-3">
               <Form.Label>Category</Form.Label>
               <Form.Select
@@ -641,26 +739,30 @@ useEffect(() => {
 {newProduct.category === "Frames" && (
   <>
     {/* Size select */}
-    <Form.Group className="mb-3">
-      <Form.Label>Size</Form.Label>
-      <Form.Select
-        value={newProduct.size || ""}
-        onChange={(e) =>
-          setNewProduct((prev) => ({ ...prev, size: e.target.value }))
-        }
-      >
-        <option value="">Select size</option>
-        {frameSizes.map((s) => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </Form.Select>
-    </Form.Group>
+ <Form.Group className="mb-3">
+              <Form.Label>20*30 Price</Form.Label>
+              <Form.Control
+                type="number"
+                value={newProduct.smallframeprice}
+                onChange={(e) =>
+                  setNewProduct((prev) => ({ ...prev, smallframeprice: e.target.value }))
+                }
+              />
+            </Form.Group>
 
-    {/* Subdomain select */}
+             <Form.Group className="mb-3">
+              <Form.Label>30*40 Price</Form.Label>
+              <Form.Control
+                type="number"
+                value={newProduct.bigframeprice}
+                onChange={(e) =>
+                  setNewProduct((prev) => ({ ...prev, bigframeprice: e.target.value }))
+                }
+              />
+            </Form.Group>
+
     <Form.Group className="mb-3">
-      <Form.Label>Subdomain</Form.Label>
+      <Form.Label>Sub Category</Form.Label>
       <div className="d-flex gap-2">
         <Form.Select
           value={newProduct.subdomain || ""}
@@ -668,7 +770,7 @@ useEffect(() => {
             setNewProduct((prev) => ({ ...prev, subdomain: e.target.value }))
           }
         >
-          <option value="">Select subdomain</option>
+          <option value="">Select sub Category</option>
           {subdomains.map((sd) => (
             <option key={sd} value={sd}>
               {sd}
@@ -677,7 +779,7 @@ useEffect(() => {
         </Form.Select>
         <Form.Control
           type="text"
-          placeholder="Add new subdomain"
+          placeholder="Add new sub Category"
           value={newSubdomain}
           onChange={(e) => setNewSubdomain(e.target.value)}
         />
@@ -695,6 +797,8 @@ useEffect(() => {
         </Button>
       </div>
     </Form.Group>
+    {/* Subdomain select */}
+
   </>
 )}
 

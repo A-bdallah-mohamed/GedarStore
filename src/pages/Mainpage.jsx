@@ -5,6 +5,7 @@ import logo from '../Assets/logo.png'
 import { FaChevronDown } from "react-icons/fa";
 import { useGlobal } from '../App';
 export default function Mainpage() {
+
   const { products } = useGlobal();
   const { banners } = useGlobal();
 
@@ -19,17 +20,17 @@ console.log(categories)
   }},[products,mainbanner])
 
 function scrollvh() {
-  const distance = window.innerHeight * 0.8; // 50vh in pixels
+  const distance = window.innerHeight * 0.8; 
   window.scrollBy({
-    top: distance, // positive = scroll down, negative = scroll up
-    behavior: 'smooth' // smooth scroll
+    top: distance,
+    behavior: 'smooth' 
   });
 }
 
   return (
     <div className='d-flex flex-column'>
-      <div className='startinganimation'>
-        <div className='imgcontainer'>
+      <div className={`startinganimation ${products.length > 0 ? '' : 'active'}`}>
+        <div className={`imgcontainer ${products.length > 0 ? '' : 'active'}`}>
 <img src={logo} alt="" />
         </div>
         

@@ -4,8 +4,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Link } from 'react-router-dom';
+export default function Productslider({products,category}) {
+  const slugify = (str) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")    
+    .replace(/[^a-z0-9-]/g, ""); 
 
-export default function Productslider({products = [],category}) {
     if (!Array.isArray(products) || products.length === 0) return null;
 
   return (
@@ -17,8 +24,9 @@ export default function Productslider({products = [],category}) {
         <div className='Productslider maxw'>
 
 {products.length > 0 ? (
-  products.map(product => (
-    <div className='product gap-3' key={product.id}>
+  products.map((product,index) => (
+<Link to={`/products/${slugify(product.name)}`} className='navlink'>
+  <div className='product gap-3' key={product.id} >
       
       
       <div className="imgcontainer">
@@ -29,6 +37,7 @@ export default function Productslider({products = [],category}) {
       <p>EGP {product.price}</p>
       </div>
       </div>
+      </Link>
   ))
 ) : (
   <p>Loading...</p>

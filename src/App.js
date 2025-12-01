@@ -1,11 +1,12 @@
 import React,{useState,useEffect,createContext, useContext} from "react";
 import { Routes, Route, Link } from "react-router-dom";
-
+import ProductPage from "./pages/ProductPage";
 import Dashboard from "./pages/Dashboard";
 import Mainpage from "./pages/Mainpage";
 import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import { db } from "./firebase/firebaseconfig";
+import ScrollToTop from "./GlobalStates/ScrollToTop";
 import {
   collection,
   getDocs,
@@ -20,6 +21,13 @@ const productsglobalcontext = createContext()
 export const useGlobal = () => useContext(productsglobalcontext)
 
 function App() {
+  const slugify = (str) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")    
+    .replace(/[^a-z0-9-]/g, ""); 
+
 const [loading, setLoading] = useState(true);
 const [users,setusers] = useState([])
 
@@ -59,6 +67,7 @@ useEffect(() => {
 
   return (
 <productsglobalcontext.Provider value={{ products, banners, users }}>
+             <ScrollToTop />
       <Routes>
          <Route path="/" element={<Mainpage />} />
         <Route path="/Login" element={<Login />} />
@@ -67,6 +76,15 @@ useEffect(() => {
           <Dashboard />
           </ProtectedRoute>
           } />
+{products.length > 0 &&
+  products.map((product, index) => (
+    <Route
+      key={index}
+      path={`/products/${slugify(product.name)}`} 
+      element={<ProductPage product={product}/> }
+    />
+  ))
+}
 
       </Routes>
 </productsglobalcontext.Provider>
