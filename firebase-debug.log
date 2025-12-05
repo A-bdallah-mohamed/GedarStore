@@ -1,0 +1,34 @@
+[debug] [2025-12-03T15:10:42.572Z] ----------------------------------------------------------------------
+[debug] [2025-12-03T15:10:42.575Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ladmin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting --project gedarstoreonline
+[debug] [2025-12-03T15:10:42.575Z] CLI Version:   14.26.0
+[debug] [2025-12-03T15:10:42.575Z] Platform:      win32
+[debug] [2025-12-03T15:10:42.575Z] Node Version:  v24.11.1
+[debug] [2025-12-03T15:10:42.575Z] Time:          Wed Dec 03 2025 17:10:42 GMT+0200 (Eastern European Standard Time)
+[debug] [2025-12-03T15:10:42.575Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-12-03T15:10:42.747Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-12-03T15:10:42.747Z] > authorizing via signed-in user (abddallahmohammed21@gmail.com)
+[debug] [2025-12-03T15:10:42.747Z] [iam] checking project gedarstoreonline for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-12-03T15:10:42.748Z] Checked if tokens are valid: true, expires at: 1764777691716
+[debug] [2025-12-03T15:10:42.748Z] Checked if tokens are valid: true, expires at: 1764777691716
+[debug] [2025-12-03T15:10:42.749Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/gedarstoreonline:testIamPermissions [none]
+[debug] [2025-12-03T15:10:42.749Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/gedarstoreonline:testIamPermissions x-goog-quota-user=projects/gedarstoreonline
+[debug] [2025-12-03T15:10:42.749Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gedarstoreonline:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-12-03T15:10:44.452Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/gedarstoreonline:testIamPermissions 200
+[debug] [2025-12-03T15:10:44.453Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gedarstoreonline:testIamPermissions {}
+[debug] [2025-12-03T15:10:44.453Z] [iam] error while checking permissions, command may fail: Authorization failed. This account is missing the following required permissions on project gedarstoreonline:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2025-12-03T15:10:44.454Z] Checked if tokens are valid: true, expires at: 1764777691716
+[debug] [2025-12-03T15:10:44.454Z] Checked if tokens are valid: true, expires at: 1764777691716
+[debug] [2025-12-03T15:10:44.455Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/gedarstoreonline [none]
+[debug] [2025-12-03T15:10:45.439Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/gedarstoreonline 403
+[debug] [2025-12-03T15:10:45.440Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/gedarstoreonline {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2025-12-03T15:10:45.443Z] Request to https://firebase.googleapis.com/v1beta1/projects/gedarstoreonline had HTTP Error: 403, The caller does not have permission
+[debug] [2025-12-03T15:10:46.693Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/gedarstoreonline had HTTP Error: 403, The caller does not have permission
+    at responseToError (C:\Users\ladmin\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:53:12)
+    at RetryOperation._fn (C:\Users\ladmin\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:322:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[error] 
+[error] Error: Failed to get Firebase project gedarstoreonline. Please make sure the project exists and your account has permission to access it.

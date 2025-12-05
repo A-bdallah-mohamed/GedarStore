@@ -1,21 +1,17 @@
 {
-  "hosting": [
-    {
-      "site": "gedarstore--1144",
-      "public": "build",
-      "rewrites": [],
-      "redirects": [
-        {
-          "source": "/**",
-          "destination": "https://gedarstoreonline.web.app",
-          "type": 301
-        }
-      ]
-    },
-    {
-      "site": "gedarstoreonline",
-      "public": "build",
-      "rewrites": [{ "source": "**", "destination": "/index.html" }]
-    }
-  ]
+  "hosting": {
+    "site": "gedarstore",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
 }

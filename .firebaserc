@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "gedarstore--1144"
-  }
+    "default": "gedarstore",
+    "online": "gedarstore"
+  },
+  "targets": {},
+  "etags": {}
 }

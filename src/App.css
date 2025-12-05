@@ -96,8 +96,12 @@ transition: 0.3s ease all;
 cursor: pointer;
 
 }
-
-
+.productpage .buttonscontainer button{
+transition: 0.3s ease all;
+}
+.productpage .buttonscontainer button:hover{
+filter: brightness(0.8);
+}
 .product h5{
   display: flex;
   position: relative;
@@ -182,11 +186,11 @@ object-fit: cover;
   height: 200px;
 }
 .startinganimation .imgcontainer.active{
-  animation: revealOverflow 1.3s forwards;
+  animation: revealOverflow 1s forwards;
 }
 
 .startinganimation.active  img {
-  animation: slide_and_rotate 2.5s ease-in-out infinite;
+  animation: slide_and_rotate 2s ease-in-out infinite;
 }
 
 @keyframes slide_and_rotate {
@@ -240,4 +244,8 @@ object-fit: cover;
 .navlink{
   color: inherit;
   text-decoration: inherit;
+}
+.poductdetailscontainer{
+  display: flex;
+  flex-direction: column;
 }
