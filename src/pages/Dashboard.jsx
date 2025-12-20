@@ -243,20 +243,34 @@ const handleAddOrEditBanner = async (e) => {
     return;
   }
 
+  // build payload safely (only required + existing optional fields)
+  const payload = {
+    img: newBanner.img,
+    name: newBanner.name,
+    ...(newBanner.title?.trim() && { title: newBanner.title }),
+    ...(newBanner.link?.trim() && { link: newBanner.link }),
+  };
+
   if (editingBanner) {
-    await updateDoc(doc(db, "Banners", editingBanner.id), { img: newBanner.img, name: newBanner.name });
+    await updateDoc(doc(db, "Banners", editingBanner.id), payload);
+
     setBanners((prev) =>
       prev.map((b) =>
-        b.id === editingBanner.id ? { ...b, img: newBanner.img, name: newBanner.name } : b
+        b.id === editingBanner.id ? { ...b, ...payload } : b
       )
     );
+
     setEditingBanner(null);
   } else {
-    const docRef = await addDoc(collection(db, "Banners"), { img: newBanner.img, name: newBanner.name });
-    setBanners((prev) => [...prev, { id: docRef.id, img: newBanner.img, name: newBanner.name }]);
+    const docRef = await addDoc(collection(db, "Banners"), payload);
+
+    setBanners((prev) => [
+      ...prev,
+      { id: docRef.id, ...payload }
+    ]);
   }
 
-  setNewBanner({ img: "", name: "" });
+  setNewBanner({ img: "", name: "", title: "", link: "" });
   setShowBannerModal(false);
 };
 
@@ -391,7 +405,7 @@ useEffect(() => {
 
       {/* Main Content */}
       <div className="p-4 flex-grow-1">
-        <h2 className="mb-4 text-capitalize">{activeTab}</h2>
+        <h2 className="mb-4 text-capitalize d-flex ">{activeTab} {activeTab === "banners" ? <p className=" text-muted m-0 d-flex align-items-center" style={{fontSize:'12px'}}>(Please Don't Upload or Delete any Banners)</p> : <></>}</h2>
 
         {/* PRODUCTS TAB */}
         {activeTab === "products" && (
@@ -478,6 +492,7 @@ useEffect(() => {
               )}
               <div className="card-body">
                 <h5>{b.name || "Unnamed Banner"}</h5>
+                {b.title? <h6 className="text-black">{b.title}</h6> : <h6 className="text-muted">-- Untitled Banner</h6>} 
                 <Button
                   variant="warning"
                   size="sm"
@@ -841,6 +856,30 @@ useEffect(() => {
           placeholder="Enter banner name (optional)"
         />
       </Form.Group>
+
+            <Form.Group className="mb-3">
+        <Form.Label>Banner Title</Form.Label>
+        <Form.Control
+          type="text"
+          value={newBanner.title}
+          onChange={(e) =>
+            setNewBanner((prev) => ({ ...prev, title: e.target.value }))
+          }
+          placeholder="Enter banner Title (optional)"
+        />
+      </Form.Group>
+        <Form.Group className="mb-3">
+        <Form.Label>Link</Form.Label>
+        <Form.Control
+          type="text"
+          value={newBanner.link}
+          onChange={(e) =>
+            setNewBanner((prev) => ({ ...prev, link: e.target.value }))
+          }
+          placeholder="Enter Link (optional)"
+        />
+      </Form.Group>
+
       <Form.Group className="mb-3">
         <Form.Label>Banner Image</Form.Label>
         <Form.Control type="file" accept="image/*" onChange={handleBannerImageUpload} />

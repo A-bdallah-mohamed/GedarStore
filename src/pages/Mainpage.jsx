@@ -59,26 +59,25 @@ function scrollvh() {
   />
 ))}
 </section>
-<section className=' d-flex align-items-center justify-content-center'>
+<section className=' d-flex align-items-center justify-content-center flex-column'>
+<p className='fs-1 fw-bold text-black'>Categories</p>
   <div className='maxw'>
     <div className="row">
 <div className="col-4">
   <div className="catimgcontainer">
     <img src={banners[2]?.img} alt="" />
-    <p>Stickers</p>
+    <p>{banners[2]?.title}</p>
   </div>
 </div>
 <div className="col-4">
   <div className="catimgcontainer">
     <img src={banners[7]?.img} alt="" />
-    <p>Frames</p>
-  </div>
+  <p>{banners[7]?.title}</p>  </div>
 </div>
 <div className="col-4">
   <div className="catimgcontainer">
     <img src={banners[4]?.img} alt="" />
-    <p>Labtop stickers</p>
-  </div>
+  <p>{banners[4]?.title}</p>  </div>
 </div>
 </div>
 </div>
@@ -129,7 +128,7 @@ function scrollvh() {
     <div className="col-3 p-0"> 
 
 
-<a href="https://www.instagram.com/p/DBRJuSCigb4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
+<a href={banners[3]?.link}>
       <div className="instaimgcontainer">
     <img src={banners[3]?.img} alt="" />
     <p><FaInstagram />

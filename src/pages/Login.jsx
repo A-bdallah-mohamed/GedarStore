@@ -16,10 +16,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // ---------------------------
-  // 🔥 Google Sign-in
-  // ---------------------------
-
 
 const addUserToFirestore = async (user) => {
   try {

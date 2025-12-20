@@ -19,9 +19,11 @@ export default function Header() {
   return (
     <div className='headercontainer'>
     <header>
-        <RxHamburgerMenu className='icon' style={{flex:'.2'}}/>
+        <RxHamburgerMenu className='icon' style={{width:'200px'}}/>
+        <Link to='/'>
         <img src={logo} alt=""  onClick={scrollToTop}/>
-        <div className='d-flex align-items-center gap-4'>
+        </Link>
+        <div className='d-flex align-items-center gap-4' style={{width:'200px'}}>
         <IoIosSearch className='icon'/>
         <Link to="/Login">
         <MdOutlineAccountCircle className='icon'/> </Link>

@@ -3,7 +3,7 @@ header{
   align-items: center;
   justify-content: space-between;
   padding: 20px 80px;
-width: 100%;
+width: 100vw;
 }
 
 body{
@@ -19,9 +19,9 @@ align-items: center;
 justify-content: center;
 position: fixed;
 backdrop-filter: blur(5px);
-width: 100%;
+width: 100vw;
 box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.07);
-background-color: rgba(255, 255, 255, 0.468);
+background-color: rgba(255, 255, 255, 0.214);
 z-index: 10;
 }
 .center{
@@ -94,6 +94,18 @@ header .icon{
   margin: 0 10px 0 10px;
 transition: 0.3s ease all;
 cursor: pointer;
+  transform: scale(1);
+
+}
+
+.product:hover img{
+  transform: scale(1.1);
+}
+.product:hover h5{
+font-size: 22px;;
+}
+.product p{
+      font-size: 18px;
 
 }
 .productpage .buttonscontainer button{
@@ -105,14 +117,20 @@ filter: brightness(0.8);
 .product h5{
   display: flex;
   position: relative;
-}
+      font-size: 20px;
+  font-weight: bold;
 
+}
+.product p{
+      font-size: 15px;
+
+}
 .product h5,.product p{
   padding: 0px 15px;
   text-align: left;
   width: 100%;
   margin: 0;
-  font-weight: bold;
+transition: 0.3s ease all;
 }
 .mainsectioncontent button{
   padding: 10px 30px;
@@ -149,6 +167,45 @@ width: 100%;
   justify-content: center;
   background-color: white;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
+}
+.addtocarthvrbtn{
+  position: absolute;
+  top:-50px;
+  right: 30px;
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  font-weight: 500;
+  padding: 5px 15px;
+  border-radius: 50px;
+  transition: 0.3s ease all;
+    transform: scale(1);
+}
+.addtowshlsthvrbtn{
+  position: absolute;
+  top:-50px;
+  right: 30px;
+  border: 2px solid black;
+  background-color: rgb(198, 0, 0);
+  color: white;
+  font-weight: 500;
+  padding: 5px 15px;
+  border-radius: 50px;
+  transition: 0.3s ease all;
+    transform: scale(1);
+}
+.product:hover .addtocarthvrbtn{
+    top: 20px;
+}
+.product:hover .addtowshlsthvrbtn{
+  
+    top: 60px;
+}
+.addtocarthvrbtn:hover,.addtowshlsthvrbtn:hover{
+  transform: scale(1.1);
+box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.24);
 }
 .product .imgcontainer img{
 width: 100%;
