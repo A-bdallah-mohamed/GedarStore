@@ -90,7 +90,7 @@ function scrollvh() {
   <div className="row">
         <div className="col-3 p-0">  
 
-      <a href='https://www.instagram.com/gedarstore?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='>
+      <a href={banners[1]?.link}>
       <div className="instaimgcontainer">
     <img src={banners[1]?.img} alt="" />
     <p><FaInstagram />
@@ -101,7 +101,7 @@ function scrollvh() {
   </div>
     <div className="col-3 p-0"> 
 
-<a href="https://www.instagram.com/p/DG8J2BlIpix/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
+<a href={banners[0]?.link}>
 
       <div className="instaimgcontainer">
     <img src={banners[0]?.img} alt="" />
@@ -115,7 +115,7 @@ function scrollvh() {
     <div className="col-3 p-0">  
 
 
-<a href="https://www.instagram.com/reel/DOi4UNvgguD/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
+<a href={banners[6]?.link}>
       <div className="instaimgcontainer">
     <img src={banners[6]?.img} alt="" />
     <p><FaInstagram />
