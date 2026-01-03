@@ -11,11 +11,14 @@ import { FaTelegramPlane } from "react-icons/fa";
 
 export default function Mainpage() {
 
+
+
+
+
+  
   const { products } = useGlobal();
   const { banners } = useGlobal();
-
 const mainbanner = banners.find(b => b.name === "Main")
-
 const [categories,setcategories] = useState([])
 
 useEffect(() => {
@@ -32,6 +35,8 @@ function scrollvh() {
   });
 }
 
+
+
   return (
     <div className='d-flex flex-column'>
       <div className={`startinganimation ${products.length > 0 ? '' : 'active'}`}>
@@ -40,6 +45,7 @@ function scrollvh() {
         </div>
         
       </div>
+
     <section className='mainsection' style={{backgroundImage: `linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.6)), url(${mainbanner?.img})`,backgroundSize:'cover'}}>
         <Header />
         <div className='d-flex justify-content-end flex-column h-100 mainsectioncontent'>
@@ -129,7 +135,7 @@ function scrollvh() {
 
 
 <a href={banners[3]?.link}>
-      <div className="instaimgcontainer">
+      <div className="instaimgcontainer rounded-top-end">
     <img src={banners[3]?.img} alt="" />
     <p><FaInstagram />
 </p>

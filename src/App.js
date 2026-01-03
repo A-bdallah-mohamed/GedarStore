@@ -16,6 +16,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import Cart from './pages/Cart'
 
 const productsglobalcontext = createContext()
 export const useGlobal = () => useContext(productsglobalcontext)
@@ -65,12 +66,19 @@ useEffect(() => {
   }
 }, [loading]);
 
+
+
+
+
+
   return (
 <productsglobalcontext.Provider value={{ products, banners, users }}>
              <ScrollToTop />
       <Routes>
          <Route path="/" element={<Mainpage />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/Login" element={<Login />}  />
+                <Route path="/Cart" element={<Cart />}  />
+
         <Route path="/Dashboard" element={
           <ProtectedRoute adminOnly={true}>
           <Dashboard />

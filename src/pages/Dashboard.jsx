@@ -144,18 +144,28 @@ else if(newProduct.category !== 'Frames'){
       alert("Please fill category");
       return;
     }
+const productwithsearchwords = {...newProduct, searchwords: tags};
 
     if (editingProduct) {
-      await updateDoc(doc(db, "Products", editingProduct.id), newProduct);
+
+    await   updateDoc(doc(db, "Products", editingProduct.id), productwithsearchwords);
+      
       setProducts((prev) =>
         prev.map((p) =>
-          p.id === editingProduct.id ? { ...newProduct, id: editingProduct.id } : p
+          p.id === editingProduct.id ? { ...productwithsearchwords, id: editingProduct.id } : p
         )
       );
       setEditingProduct(null);
+
+ 
+    
     } else {
-      const docRef = await addDoc(collection(db, "Products"), newProduct);
-      setProducts((prev) => [...prev, { ...newProduct, id: docRef.id }]);
+
+      const docRef = await addDoc(collection(db, "Products"), productwithsearchwords);
+      setProducts((prev) => [...prev, { ...productwithsearchwords, id: docRef.id }]);
+
+
+
     }
 
     setNewProduct({ name: "", price: "", category: "", description: "", image: "" });
@@ -171,6 +181,7 @@ else if(newProduct.category !== 'Frames'){
 
   // ✏️ Edit Product
   const handleEditProduct = (product) => {
+    setTags(product.searchwords ? product.searchwords : [] )
     setEditingProduct(product);
     setNewProduct(product);
     setShowModal(true);
@@ -359,26 +370,47 @@ const handleEditBanner = (banner) => {
 useEffect(() => {
   const loadSubdomains = async () => {
     const snap = await getDocs(collection(db, "Products"));
-
     const all = [];
-
     snap.docs.forEach((doc) => {
       const data = doc.data();
-
-      // only frame products have subdomains
       if (data.category === "Frames" && data.subdomain) {
         all.push(data.subdomain);
       }
     });
-
-    // remove duplicates
     const unique = [...new Set(all)];
-
     setSubdomains(unique);
   };
 
+
   loadSubdomains();
 }, []);
+
+
+
+
+  const [input, setInput] = useState("");
+  const [tags, setTags] = useState([]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && input.trim()) {
+      e.preventDefault();
+      setTags([...tags, input.trim()]);
+      setInput("");
+    }
+  };
+useEffect(() => {
+  console.log(newProduct);
+  
+}, [newProduct]);
+
+useEffect(() => {
+  console.log(tags);
+  
+}, [tags]);
+
+const removesearchword = (word) => {
+  setTags(tags.filter(item => item !== word))
+}
 
   return (
 <div className="d-flex h-100">
@@ -724,18 +756,7 @@ useEffect(() => {
                 }
               />
             </Form.Group>
-            {newProduct.category === "Frames" ?  <></> :   <Form.Group className="mb-3">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                value={newProduct.price}
-                onChange={(e) =>
-                  setNewProduct((prev) => ({ ...prev, price: e.target.value }))
-                }
-              />
-            </Form.Group>}
-           
-            <Form.Group className="mb-3">
+                     <Form.Group className="mb-3">
               <Form.Label>Category</Form.Label>
               <Form.Select
                 value={newProduct.category || ""}
@@ -751,8 +772,12 @@ useEffect(() => {
                 ))}
               </Form.Select>
               {/* Conditional selects for "frames" */}
-{newProduct.category === "Frames" && (
-  <>
+{/* {newProduct.category === "Frames" && (
+  
+)} */}
+
+            </Form.Group>
+            {newProduct.category === "Frames" ?  <>
     {/* Size select */}
  <Form.Group className="mb-3">
               <Form.Label>20*30 Price</Form.Label>
@@ -814,10 +839,53 @@ useEffect(() => {
     </Form.Group>
     {/* Subdomain select */}
 
-  </>
+  </> :   <Form.Group className="mb-3">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                value={newProduct.price}
+                onChange={(e) =>
+                  setNewProduct((prev) => ({ ...prev, price: e.target.value }))
+                }
+              />
+            </Form.Group>}
+
+
+ <div className="tagscontainer">
+          <p className="mb-2">Search Words</p>
+
+      <input 
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Type and press Enter"
+      />
+      <div className="tags mb-3">
+{tags && (
+  <div className="d-flex gap-2 flex-wrap">
+
+        {tags.map((sw, index) => (
+      
+      <div className=" tag" key={index}>{sw} 
+      <button 
+      onClick={()=>removesearchword(sw)}
+      type="button" 
+      class="btn-close" 
+      aria-label="Close" /></div>
+    ))}
+
+
+  </div>
 )}
 
-            </Form.Group>
+
+
+      </div>
+
+    </div>
+ 
+     
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control
