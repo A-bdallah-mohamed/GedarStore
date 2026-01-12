@@ -17,7 +17,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import Cart from './pages/Cart'
-
+import Checkout from "./pages/Checkout";
 const productsglobalcontext = createContext()
 export const useGlobal = () => useContext(productsglobalcontext)
 
@@ -78,6 +78,7 @@ useEffect(() => {
          <Route path="/" element={<Mainpage />} />
         <Route path="/Login" element={<Login />}  />
                 <Route path="/Cart" element={<Cart />}  />
+                <Route path="/Checkout" element={<Checkout />}  />
 
         <Route path="/Dashboard" element={
           <ProtectedRoute adminOnly={true}>

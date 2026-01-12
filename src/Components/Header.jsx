@@ -23,23 +23,23 @@ export default function Header() {
 
 
 
-  const sendEmail = async (email) => {
-    const functions = getFunctions(app);
-    const callSendEmail = httpsCallable(functions, "sendEmail");
+  // const sendEmail = async (email) => {
+  //   const functions = getFunctions(app);
+  //   const callSendEmail = httpsCallable(functions, "sendEmail");
 
-    try {
-      const result = await callSendEmail({
-        to: email,
-        subject: "Welcome To Gedar!",
-        message: "Thanks for signing up"
-      });
+  //   try {
+  //     const result = await callSendEmail({
+  //       to: email,
+  //       subject: "Welcome To Gedar!",
+  //       message: "Thanks for signing up"
+  //     });
 
-      console.log(result.data); // { success: true }
+  //     console.log(result.data); // { success: true }
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
 
 
@@ -56,7 +56,6 @@ const searchopen = () => {
   }
 document.body.style.overflow = 'hidden';
 }
-
   const scrollToTop = () => {
   window.scrollTo({
     top: 0,
@@ -89,9 +88,7 @@ const searchclose = () => {
   }, []);
   
 useEffect(() => {
-  const normalize = (text = "") =>
-    text.toLowerCase().trim();
-
+  const normalize = (text = "") => text.toLowerCase().trim();
   const normalizedQuery = normalize(query);
 
   if (!normalizedQuery) {
@@ -99,13 +96,33 @@ useEffect(() => {
     return;
   }
 
-  setsearchresults(
-    products.filter((product) =>
-      product?.searchwords?.some((searchWord) =>
-        normalize(searchWord).includes(normalizedQuery)
-      )
-    )
-  );
+  const exactMatches = [];
+  const partialMatches = [];
+
+  products.forEach(product => {
+    const matches = product?.searchwords?.some(sw => {
+      const word = normalize(sw);
+      const words = word.split(" ");
+      return words.includes(normalizedQuery); // whole word match
+    });
+
+    if (matches) {
+      exactMatches.push(product);
+      return;
+    }
+
+    // partial match fallback
+    const partial = product?.searchwords?.some(sw =>
+      normalize(sw).includes(normalizedQuery)
+    );
+
+    if (partial) {
+      partialMatches.push(product);
+    }
+  });
+
+  // exact first, then partial
+  setsearchresults([...exactMatches, ...partialMatches]);
 }, [query, products]);
 
 const hasLetters = /[a-z]/i.test(query.trim());

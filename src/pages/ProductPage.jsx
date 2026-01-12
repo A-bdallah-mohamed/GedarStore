@@ -16,7 +16,7 @@ export default function ProductPage({product}) {
         </div>
         <div className='poductdetailscontainer px-5' style={{marginTop:"50px"}}>
 <p style={{fontWeight:"500",color:'#7a7a7aff'}} className='m-0'>GedarStore/{product.category}</p>
-<p className='fs-1 m-0 fw-bold'>{product.name}</p>
+<p className='fs-1 m-0 '>{product.name}</p>
 <p className='fs-3 m-0' style={{color:'#ff6344ff'}}>L.E. {product.price}</p>
 
 <p className='mt-4' style={{color:'#000000ff'}}>{product.description}</p>

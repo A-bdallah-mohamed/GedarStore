@@ -66,7 +66,7 @@ function scrollvh() {
 ))}
 </section>
 <section className=' d-flex align-items-center justify-content-center flex-column'>
-<p className='fs-1 fw-bold text-black'>Categories</p>
+<p className='fs-1 text-black'>Categories</p>
   <div className='maxw'>
     <div className="row">
 <div className="col-4">

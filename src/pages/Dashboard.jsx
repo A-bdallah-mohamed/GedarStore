@@ -467,7 +467,7 @@ const removesearchword = (word) => {
                         />
                       )}
                       <div className="card-body">
-                        <h5 className="fw-bold">{p.name}</h5>
+                        <h5 className="">{p.name}</h5>
                         <p className="mb-1">{p.description}</p>
                         <p className=" mb-0 text-muted">
                           {p.category || <em>No category</em>}
@@ -475,8 +475,8 @@ const removesearchword = (word) => {
                         {p.category === 'Frames' ?  <p className="text-muted ms-1">
                           - {p.subdomain || <em>No Sub Category</em>}
                         </p> : <></>}
-                         {p.category === 'Frames' ? <p className="fw-bold">EGP {p.smallframeprice}</p> :       
-            <p className="fw-bold">EGP {p.price}</p>
+                         {p.category === 'Frames' ? <p className="">EGP {p.smallframeprice}</p> :       
+            <p className="">EGP {p.price}</p>
 }
                         <Button
                           variant="warning"

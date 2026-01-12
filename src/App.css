@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
+*{
+  font-family: "Baloo 2", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
 header{
   display: flex;
   align-items: center;
@@ -548,4 +554,43 @@ display: flex;
   background-color:#8d3f30;
   height: 100%;
   transition: 0.3s ease all;
+}
+.cartitemimage{
+  max-height: 100%;
+  max-width: 100px;
+  width: 100px;
+}
+.cartitemimage img{
+  max-height: 100%;
+  max-width: 100%;
+width: 100%;
+
+}
+.cursor-pointer{
+  cursor: pointer;
+  user-select: none;
+}
+.jc-end{
+  align-items: center;
+  justify-content: end;
+  display: flex;
+}
+button.checkout{
+  background-color: #8d3f30;
+  color: white;
+  font-weight: 500;
+  border: none;
+  font-size: 15px;
+  padding: 12px 25px;
+  cursor: pointer;
+  transition: 0.2s ease all;
+  border-radius: 5px;
+  font-weight: 600;
+}
+button.checkout:hover{
+    background-color: #793528;
+
+}
+a:visited,a:active,a:focus,a{
+  color: inherit;
 }

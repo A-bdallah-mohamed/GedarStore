@@ -117,7 +117,7 @@ else {
           <button className='pagination' onClick={()=>scrollswiper(1000)}><IoIosArrowForward /></button>
 
         </div>
-      <button className='m-0 fw-semibold border-0 bg-transparent'>View all</button>
+      <button className='m-0  border-0 bg-transparent'>View all</button>
       </div>
       </div>
         <div className='Productslider maxw ' ref={sliderwrapper}>
@@ -140,7 +140,7 @@ else {
       <div className='w-100'>
           <Link to={`/products/${slugify(product.name)}`} className='navlink'>
       <h5>{product.name}</h5></Link>
-      <p className='fw-semibold '>{product.smallframeprice ? <p className='p-0'>From LE {product.smallframeprice}.00</p> : <> {product.price}.00 LE</>} </p>
+      <p className=' '>{product.smallframeprice ? <p className='p-0'>From LE {product.smallframeprice}.00</p> : <> {product.price}.00 LE</>} </p>
       </div>
       </div>
   ))
