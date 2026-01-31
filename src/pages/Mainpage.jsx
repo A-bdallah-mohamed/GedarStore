@@ -39,12 +39,6 @@ function scrollvh() {
 
   return (
     <div className='d-flex flex-column'>
-      <div className={`startinganimation ${products.length > 0 ? '' : 'active'}`}>
-        <div className={`imgcontainer ${products.length > 0 ? '' : 'active'}`}>
-<img src={logo} alt="" />
-        </div>
-        
-      </div>
 
     <section className='mainsection' style={{backgroundImage: `linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.6)), url(${mainbanner?.img})`,backgroundSize:'cover'}}>
         <Header />

@@ -18,6 +18,7 @@ import {
 } from "firebase/firestore";
 import Cart from './pages/Cart'
 import Checkout from "./pages/Checkout";
+import logo from './Assets/logo.png'
 const productsglobalcontext = createContext()
 export const useGlobal = () => useContext(productsglobalcontext)
 
@@ -74,7 +75,15 @@ useEffect(() => {
   return (
 <productsglobalcontext.Provider value={{ products, banners, users }}>
              <ScrollToTop />
+                 <div className={`startinganimation ${products.length > 0 ? '' : 'active'}`}>
+                <div className={`imgcontainer ${products.length > 0 ? '' : 'active'}`}>
+        <img src={logo} alt="" />
+                </div>
+                
+              </div>
       <Routes>
+          
+        
          <Route path="/" element={<Mainpage />} />
         <Route path="/Login" element={<Login />}  />
                 <Route path="/Cart" element={<Cart />}  />

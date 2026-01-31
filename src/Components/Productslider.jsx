@@ -12,8 +12,11 @@ import { auth } from "../firebase/firebaseconfig";
 import { query, where, getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase/firebaseconfig";
 import { doc, updateDoc, setDoc } from "firebase/firestore";
-
+import {addtocart} from "../GlobalStates/AddToCart";
+import { useNavigate } from 'react-router-dom';
 export default function Productslider({products,category}) {
+
+const navigate = useNavigate();
 
   const sliderwrapper = useRef(null)
   const slugify = (str) =>
@@ -41,69 +44,18 @@ if (user) {
 }
 },[user])
 
-const addtocart = async (product, e) => {
-    let productDiv = e.currentTarget; // start from button
-
-  if (user) {
-
-  // 🔹 Traverse up to find the product div
-
-  // 🔹 Firestore logic
-  const q = query(collection(db,"Users"), where("User" , "==" , user.email));
-  const currentuser = await getDocs(q);
-  if (currentuser.empty) return;
-
-  const userDoc = currentuser.docs[0];
-  const userData = userDoc.data();
-  const userId = userDoc.id;
-
-  const newCart = userData.cart ? [...userData.cart, product.id] : [product.id];
-  const userWithCart = { ...userData, cart: newCart };
-  const userDocRef = doc(db, "Users", userId);
-  await updateDoc(userDocRef, userWithCart);
-
-  console.log("Product added:", product);
-
-  }
-else {
-  let cartLS = localStorage.getItem('cart');
-  let cart;
-
-  if (!cartLS) {
-    // If cart doesn't exist, create new array with this product
-    cart = [product.id];
-  } else {
-    // Parse the existing cart string into an array
-    cart = JSON.parse(cartLS);
-    cart.push(product.id); // add new product
-  }
-
-  // Save back to localStorage
-  localStorage.setItem('cart', JSON.stringify(cart));
-  console.log(localStorage.getItem('cart'));
-}
-
-
-  while (productDiv && !productDiv.classList.contains('product')) {
+const visuals = (e)=>{
+  let productDiv = e.currentTarget;
+  while (productDiv && !productDiv.classList.contains("product")) {
     productDiv = productDiv.parentElement;
   }
 
-
-
-  // 🔹 Show the added message
-  const addedDiv = productDiv.querySelector('.added');
+  const addedDiv = productDiv?.querySelector(".added");
   if (addedDiv) {
-    addedDiv.classList.add('active');
-    setTimeout(() => {
-      addedDiv.classList.remove('active');
-    }, 2000);
+    addedDiv.classList.add("active");
+    setTimeout(() => addedDiv.classList.remove("active"), 2000);
   }
-
-
-
-};
-
-
+}
 
     if (!Array.isArray(products) || products.length === 0) return null;
 
@@ -133,7 +85,11 @@ else {
       <div className="imgcontainer">
         <Link to={`/products/${slugify(product.name)}`} className='navlink'>
         <img src={product.image} alt="" /></Link>
-        <button className='addtocarthvrbtn' onClick={(e)=> addtocart(product,e)}>+ Add to Cart</button>
+        {product.category === "Frames" ?
+        <button className='addtocarthvrbtn' onClick={()=> navigate(`/products/${slugify(product.name)}`)}>Choose Size</button>
+:      
+           <button className='addtocarthvrbtn' onClick={(e)=> {addtocart(product,e,user); visuals(e)}}>+ Add to Cart</button>
+}
                 <button className='addtowshlsthvrbtn' onClick={()=> console.log('add to Wishlist')}><FaRegHeart /> Add to Wishlist</button>
 
       </div>
@@ -146,7 +102,8 @@ else {
   ))
 ) : (
   <p>Loading...</p>
-)}
+
+  )}
 
 </div>
     </div>

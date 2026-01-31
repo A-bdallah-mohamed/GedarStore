@@ -592,5 +592,142 @@ button.checkout:hover{
 
 }
 a:visited,a:active,a:focus,a{
-  color: inherit;
+  color: inherit !important;
+  text-decoration:inherit !important;
+}
+a p:visited,a p:active,a p:focus,a{
+  color: inherit !important;
+  text-decoration:inherit !important;
+}
+.sizebuttonscontainer{
+  display: flex;
+  gap: 5px;
+}
+.sizebuttonscontainer button{
+  border: solid black 1px;
+  border-radius: 5px;
+  padding: 5px;
+  transition: 0.3s ease all;
+  background-color: white;
+}
+.sizebuttonscontainer button:hover,.sizebuttonscontainer button.active{
+  color: white;
+  background-color: rgb(40, 40, 40);
+}
+.productnameincartpage span{
+  font-size : 10px;
+  margin-left:5px;
+  color: gray;
+}
+.sidemenu{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(255, 0, 0, 0);
+  top: 0;
+  left: 0;
+  display: flex;
+padding: 8px;
+transition: 0.3s ease all;
+pointer-events: none;
+}
+.sidemenu.active{
+background-color: rgba(0, 0, 0, 0.172);
+pointer-events: all;
+
+}
+.sidemenu .component{
+  background-color: white;
+  border-radius: 8px;
+  width: 300px;
+  height: 100%;
+  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.2);
+transform: translateX(-350px);
+transition: 0.3s ease all;
+display: flex;
+flex-direction: column;
+}
+
+.sidemenu .component.active{
+  background-color: white;
+  border-radius: 8px;
+  width: 300px;
+  height: 100%;
+  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.2);
+transform: translateX(0);
+
+}
+.sidemenu .component .head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgb(166, 166, 166);
+}
+.sidemenu .component .head h4{
+margin: 0;
+}
+.sidemenu .component .head i::before{
+padding: 5px;
+font-size: 20px;
+transition: 0.2s ease all;
+}
+.sidemenu .component .head i:hover::before {
+transform: rotate(90deg);
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.framesubmenu{
+  height: 1px;
+  overflow: hidden;
+  transition: 0.2s ease all;
+}
+.framesubmenu.active{
+  height: 80px;
+}
+.sidemenu .component .body .mainul{
+  padding: 20px 0;
+}
+.sidemenu .component .body .mainul li{
+  cursor: pointer;
+}
+li .i{
+  transition: 0.2s ease all;
+}
+li.active .i{
+  transform: rotate(180deg);
+}
+.sidemenu .component .body li{
+  transition: all 0.2s ease;
+padding: 8px 30px 8px 30px ;
+}
+li:hover{
+  color: #e3a388;
+padding: 8px 30px 8px 35px !important;
+
+  background-color: rgb(233, 233, 233);
+}
+.submenuframes:hover{
+  padding: 8px 0 8px 0 !important;
+
+}
+.cartlink{  
+  position: relative;
+}
+.cartcount{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  background-color: #cc5d42;
+  border-radius: 50px;
+  color: white;
+  font-size: 12px;
 }

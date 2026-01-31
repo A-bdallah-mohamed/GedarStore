@@ -12,9 +12,13 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useGlobal } from '../App';
-import { auth } from "../firebase/firebaseconfig";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { app } from "../firebase/firebaseconfig";
+import { FaAngleDown } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase/firebaseconfig";
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/firebaseconfig";
 
 export default function Header() {
 
@@ -42,13 +46,57 @@ export default function Header() {
   // };
 
 
+const navigate = useNavigate();
 
   const { products } = useGlobal();
-const [query,setquery] =  useState("")
+const [queryy,setqueryy] =  useState("")
   const searchcontainer = useRef(null)
+    const sidemenu = useRef(null)
+    const sidemenucontainer = useRef(null)
+
   const searchbar = useRef(null)
   const [open, setOpen] = useState(false);
 const [searchresults,setsearchresults] = useState([])
+const [sidemenuactive,setSidemenuactive] = useState(false)
+const [framesmenu,setframesmenu] = useState(false)
+const [cartcount,setcartcount] = useState(0)
+
+  const user = auth.currentUser;
+
+useEffect(() => {
+  if (!user) return;
+
+  const fetchCart = async () => {
+    const q = query(collection(db, "Users"), where("User", "==", user.email));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const userDoc = snapshot.docs[0];
+      const userData = userDoc.data() || {};
+      const rawCart = Array.isArray(userData.cart) ? userData.cart : [];
+
+      // do something with rawCart, e.g., set state
+      setcartcount(rawCart.length); // assuming you have a state for cart items
+    }
+  };
+
+  fetchCart();
+}, [user]);
+
+
+const toggleframesmenu = () => {
+  console.log(framesmenu)
+  setframesmenu(!framesmenu)
+}
+
+const toggleSidemenu = (e) => {
+  console.log(sidemenuactive)
+  if(sidemenucontainer.current && !sidemenu.current.contains(e.target)){
+      console.log('inside if')
+
+  setSidemenuactive(!sidemenuactive)
+  }
+}
 
 const searchopen = () => {
   if (searchcontainer.current) {
@@ -74,7 +122,7 @@ const searchclose = () => {
 
  useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchcontainer.current && !searchbar.current.contains(event.target)) {
+      if (searchcontainer.current && !searchbar.current.contains(event.target) && !sidemenu.current.contains(event.target)) {
          searchcontainer.current.classList.remove('active')
         setOpen(false);
         document.body.style.overflow = "auto"; 
@@ -89,9 +137,9 @@ const searchclose = () => {
   
 useEffect(() => {
   const normalize = (text = "") => text.toLowerCase().trim();
-  const normalizedQuery = normalize(query);
+  const normalizedQueryy = normalize(queryy);
 
-  if (!normalizedQuery) {
+  if (!normalizedQueryy) {
     setsearchresults([]);
     return;
   }
@@ -103,7 +151,7 @@ useEffect(() => {
     const matches = product?.searchwords?.some(sw => {
       const word = normalize(sw);
       const words = word.split(" ");
-      return words.includes(normalizedQuery); // whole word match
+      return words.includes(normalizedQueryy); // whole word match
     });
 
     if (matches) {
@@ -113,7 +161,7 @@ useEffect(() => {
 
     // partial match fallback
     const partial = product?.searchwords?.some(sw =>
-      normalize(sw).includes(normalizedQuery)
+      normalize(sw).includes(normalizedQueryy)
     );
 
     if (partial) {
@@ -123,11 +171,17 @@ useEffect(() => {
 
   // exact first, then partial
   setsearchresults([...exactMatches, ...partialMatches]);
-}, [query, products]);
+}, [queryy, products]);
 
-const hasLetters = /[a-z]/i.test(query.trim());
+const hasLetters = /[a-z]/i.test(queryy.trim());
 
-
+useEffect(() => {
+  if (sidemenuactive) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+},[sidemenuactive]);
 
   return (
     <div className='headercontainer'>
@@ -138,7 +192,7 @@ const hasLetters = /[a-z]/i.test(query.trim());
       <div className='searchbar ' ref={searchbar}>
         <h4 className='mt-3 w-100 px-4'>Search</h4>
         <div className='w-100 py-3 px-4 d-flex align-items-center justify-content-between'>
-<input type="text" placeholder='Search For...' className='border-0 w-100' onChange={(e)=>setquery(e.target.value)}/>
+<input type="text" placeholder='Search For...' className='border-0 w-100' onChange={(e)=>setqueryy(e.target.value)}/>
           
           <button onClick={searchclose}><i class="bi bi-x-lg fs-3" ></i></button>
 
@@ -172,8 +226,37 @@ const hasLetters = /[a-z]/i.test(query.trim());
       </div>
       
             </div>
+
+<div className={`sidemenu ${sidemenuactive ? 'active' : ''}`} ref={sidemenucontainer} onClick={(e)=>toggleSidemenu(e)}>
+  <div className={`component ${sidemenuactive ? 'active' : ''}` } ref={sidemenu}>
+
+<div className='head'>
+  <h4>Menu</h4>
+   <button onClick={()=>setSidemenuactive(false)}><i class="bi bi-x-lg fs-3" ></i></button>
+</div>
+<div className='body'>
+  <ul className='mainul'>
+    <li onClick={() => {setSidemenuactive(false); navigate("/");}}>Home</li>
+    <li >Stickers</li>
+    <li>
+      <li onClick={()=>toggleframesmenu()} className={`submenuframes ${framesmenu ? 'active' : ''}`} style={{ padding: '8px 0', width: '100%', textAlign: 'left' }}
+>Frames <FaAngleDown className='i'/></li>
+        <ul className={`framesubmenu ${framesmenu ? 'active' : ''}`}>
+          <li>20 x 30</li>
+          <li>30 x 40</li>
+        </ul>
+    </li>
+    <li>Custom Designs</li>
+    <li onClick={() => {setSidemenuactive(false); navigate("/Cart");}}>My Cart</li>
+    <li>My Account</li>
+  </ul>
+</div>
+  </div>
+</div>
+
+
             <div style={{width:'200px'}}>
-              <button>
+              <button onClick={(e)=>toggleSidemenu(e)}>
         <RxHamburgerMenu className='icon' />
 </button>
             </div>
@@ -182,7 +265,7 @@ const hasLetters = /[a-z]/i.test(query.trim());
         </Link>
         <div className='d-flex align-items-center gap-2 justify-content-end' style={{width:'200px'}}>
           <button onClick={searchopen}>
-        <IoIosSearch className='icon'/>
+        <IoIosSearch className='icon' />
         </button>
         <Link to="/Login">
 
@@ -191,7 +274,8 @@ const hasLetters = /[a-z]/i.test(query.trim());
                 <FaRegHeart className='icon'/>
                         </button>
                                   
-     <Link to="/Cart">
+     <Link to="/Cart" className='cartlink'>
+     <div className='cartcount'>{cartcount}</div>
         <IoBag className='icon'/>
                        </Link>
 
