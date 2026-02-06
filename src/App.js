@@ -4,9 +4,12 @@ import ProductPage from "./pages/ProductPage";
 import Dashboard from "./pages/Dashboard";
 import Mainpage from "./pages/Mainpage";
 import Login from "./pages/Login";
+import CategoryPage from "./pages/CategoryPage";
+import CustomCategory from "./pages/CustomCategory";
 import ProtectedRoute from "./ProtectedRoute";
 import { db } from "./firebase/firebaseconfig";
 import ScrollToTop from "./GlobalStates/ScrollToTop";
+import Profile from "./pages/Profile";
 import {
   collection,
   getDocs,
@@ -19,6 +22,7 @@ import {
 import Cart from './pages/Cart'
 import Checkout from "./pages/Checkout";
 import logo from './Assets/logo.png'
+import Wishlist from "./pages/wishlist";
 const productsglobalcontext = createContext()
 export const useGlobal = () => useContext(productsglobalcontext)
 
@@ -88,6 +92,14 @@ useEffect(() => {
         <Route path="/Login" element={<Login />}  />
                 <Route path="/Cart" element={<Cart />}  />
                 <Route path="/Checkout" element={<Checkout />}  />
+                <Route path="/category/:name" element={<CategoryPage />} />
+                <Route path="/custom" element={<CustomCategory />} />
+                <Route path="/Profile" element={<Profile />} />
+  {/* new routes */}
+  {/* <Route path="/custom-sticker" element={<CustomSticker />} /> */}
+  {/* <Route path="/custom-frame" element={<CustomFrame />} /> */}
+  {/* <Route path="/checkout" element={<Checkout />} /> */}
+  <Route path="/wishlist" element={<Wishlist />} />
 
         <Route path="/Dashboard" element={
           <ProtectedRoute adminOnly={true}>

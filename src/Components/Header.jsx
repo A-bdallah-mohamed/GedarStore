@@ -267,12 +267,12 @@ useEffect(() => {
           <button onClick={searchopen}>
         <IoIosSearch className='icon' />
         </button>
-        <Link to="/Login">
+        <Link to="/Profile">
 
         <MdOutlineAccountCircle className='icon'/> </Link>
-                  <button>
+                  <Link to="/wishlist">
                 <FaRegHeart className='icon'/>
-                        </button>
+                     </Link>
                                   
      <Link to="/Cart" className='cartlink'>
      <div className='cartcount'>{cartcount}</div>

@@ -13,6 +13,8 @@ import { query, where, getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase/firebaseconfig";
 import { doc, updateDoc, setDoc } from "firebase/firestore";
 import {addtocart} from "../GlobalStates/AddToCart";
+import {addToWishlist} from "../GlobalStates/AddToWishlist";
+
 import { useNavigate } from 'react-router-dom';
 export default function Productslider({products,category}) {
 
@@ -90,7 +92,7 @@ const visuals = (e)=>{
 :      
            <button className='addtocarthvrbtn' onClick={(e)=> {addtocart(product,e,user); visuals(e)}}>+ Add to Cart</button>
 }
-                <button className='addtowshlsthvrbtn' onClick={()=> console.log('add to Wishlist')}><FaRegHeart /> Add to Wishlist</button>
+                <button className='addtowshlsthvrbtn' onClick={(e)=> {addToWishlist(product,e,user); visuals(e)}}><FaRegHeart /> Add to Wishlist</button>
 
       </div>
       <div className='w-100'>
