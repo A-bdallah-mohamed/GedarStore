@@ -264,16 +264,16 @@ useEffect(() => {
         <img src={logo} alt=""  onClick={scrollToTop}/>
         </Link>
         <div className='d-flex align-items-center gap-2 justify-content-end' style={{width:'200px'}}>
-          <button onClick={searchopen}>
+          <button onClick={searchopen} >
         <IoIosSearch className='icon' />
         </button>
-        <Link to="/Profile">
+        <Link to="/Profile" className='hideonsmallscreens'>
 
-        <MdOutlineAccountCircle className='icon'/> </Link>
-                  <Link to="/wishlist">
+        <MdOutlineAccountCircle className='icon' /> </Link>
+                  <Link to="/wishlist" className='hideonsmallscreens'>
                 <FaRegHeart className='icon'/>
                      </Link>
-                                  
+
      <Link to="/Cart" className='cartlink'>
      <div className='cartcount'>{cartcount}</div>
         <IoBag className='icon'/>

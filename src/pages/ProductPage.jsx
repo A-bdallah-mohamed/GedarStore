@@ -27,7 +27,7 @@ const navigate = useNavigate();
 <p className='fs-1 m-0 '>{product.name}</p>
 <p className='fs-3 m-0' style={{color:'#ff6344ff'}}>{product.category === 'Frames' ? 
        <> {activesize === null ? <>Select Size To See Price</> :
-        <>{activesize === "20x30" ? <p className='fs-3 m-0' style={{color:'#ff6344ff'}}>L.E. {product.smallframeprice}</p> : <p className='fs-3 m-0' style={{color:'#ff6344ff'}}>L.E. {product.bigframeprice}</p>}</>} </>: 
+        <>{activesize === "20x30" ? <span>L.E. {product.smallframeprice}</span> : <span>L.E. {product.bigframeprice}</span>}</>} </>: 
 <>L.E. {product.price}</>}</p>
 {product.category === 'Frames' ? <div className='sizebuttonscontainer'>
 <button className={`${activesize === "20x30" ? "active" : ""}`} onClick={()=>setactivesize("20x30")}>20 X 30</button>

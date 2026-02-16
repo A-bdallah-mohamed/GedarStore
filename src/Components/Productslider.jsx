@@ -98,7 +98,7 @@ const visuals = (e)=>{
       <div className='w-100'>
           <Link to={`/products/${slugify(product.name)}`} className='navlink'>
       <h5>{product.name}</h5></Link>
-      <p className=' '>{product.smallframeprice ? <p className='p-0'>From LE {product.smallframeprice}.00</p> : <> {product.price}.00 LE</>} </p>
+      <p className=' '>{product.smallframeprice ? <span className='p-0'>From LE {product.smallframeprice}.00</span> : <span>{product.price}.00 LE</span>} </p>
       </div>
       </div>
   ))

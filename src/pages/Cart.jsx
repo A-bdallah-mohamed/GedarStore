@@ -15,6 +15,8 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [totalOrder, setTotalOrder] = useState(0);
   const [totalOrderPercent, setTotalOrderPercent] = useState(0);
+  const FREE_SHIPPING_THRESHOLD = 700;
+  const SHIPPING_FEE = 65;
 
   // Fetch cart from Firebase or localStorage
   useEffect(() => {
@@ -69,7 +71,7 @@ export default function Cart() {
       0
     );
     setTotalOrder(totalPrice);
-    setTotalOrderPercent(Math.min((totalPrice / 200) * 100, 100));
+    setTotalOrderPercent(Math.min((totalPrice / FREE_SHIPPING_THRESHOLD) * 100, 100));
   }, [cartItems]);
 
   // Sync cart to Firebase
@@ -117,73 +119,122 @@ export default function Cart() {
     });
   };
 
+  const removeItem = product => {
+    setCartItems(prev => {
+      const updated = prev.filter(
+        item => !(item.id === product.id && item.price === product.price)
+      );
+
+      syncCartToFirebase(updated);
+
+      if (!user) {
+        const guestCart = updated.flatMap(item =>
+          Array(item.quantity).fill({ id: item.id, price: item.price })
+        );
+        localStorage.setItem("cart", JSON.stringify(guestCart));
+      }
+
+      return updated;
+    });
+  };
+
+  const shippingFee = totalOrder >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+  const totalWithShipping = totalOrder + shippingFee;
+
   return (
-    <div className='d-flex flex-column' style={{ minHeight: '100vh', justifyContent: 'space-between' }}>
+    <div className='d-flex flex-column cart-page' style={{ minHeight: '100vh', justifyContent: 'space-between' }}>
       <Header />
 
       <section>
         <div className='w-100 d-flex justify-content-center'>
-          <div className='maxw w-100' style={{ marginTop: '150px' }}>
+          <div className='maxw w-100 cart-container' style={{ marginTop: '150px' }}>
             <h2 className='px-5 fw-bold'>Shopping Cart</h2>
 
             {cartItems.length > 0 ? (
               <>
-                <div className='freeshipping w-100'>
-                  {totalOrder < 200 ? (
-                    <h5 className='m-0'>
-                      Great! You are {200 - totalOrder} EGP Away from Getting <span>Free Shipping</span>
-                    </h5>
+                <div className='freeshipping w-100 cart-free-card'>
+                  {totalOrder < FREE_SHIPPING_THRESHOLD ? (
+                    <h5 className='m-0'>Add more items to unlock free shipping.</h5>
                   ) : (
-                    <h5 className='m-0'>
-                      Congratulations!🎉 you now have <span>Free Shipping</span>
-                    </h5>
+                    <h5 className='m-0'>Congratulations! You unlocked free shipping.</h5>
                   )}
 
-                  <div className='w-100 d-flex align-items-center justify-content-center gap-2' style={{ marginTop: '20px' }}>
-                    <p className='m-0 fw-bold'>EGP 0</p>
-                    <div className='inicatorcontainer w-50'>
+                  <div className='free-ship-pill'>GETTING STARTED</div>
+
+                  <div className='w-100 d-flex align-items-center justify-content-between gap-2 free-ship-scale'>
+                    <p className='m-0 fw-bold'>0 EGP</p>
+                    <div className='inicatorcontainer w-100'>
                       <div className='indicator' style={{ width: `${totalOrderPercent}%` }}></div>
                     </div>
-                    <div className='text-center'>
-                      <p className='m-0 fw-bold'>200EGP</p>
-                      <p className='m-0 fw-bold'>Free Shipping</p>
-                    </div>
+                    <p className='m-0 fw-bold'>{FREE_SHIPPING_THRESHOLD} EGP</p>
+                  </div>
+                </div>
+
+                <div className='ms-4 row w-100 px-5 mt-4 cartitems-head'>
+                    <div className="col-6 fw-bold ps-4 cart-col-head">Product</div>
+                    <div className="col-2 fw-bold jc-end cart-col-head">Quantity</div>
+                    <div className="col-2 fw-bold jc-end cart-col-head">Total</div>
                   </div>
 
-                  <div className='row w-100 px-5 mt-5'>
-                    <div className="col-6 fw-bold ps-4">Product</div>
-                    <div className="col-2 fw-bold jc-end">Price</div>
-                    <div className="col-2 fw-bold jc-end">Quantity</div>
-                    <div className="col-2 fw-bold jc-end">Total</div>
-
+                  <div className='row w-100   cartitems-grid ms-1 mt-1'>
                     {cartItems.map(product => (
-                      <React.Fragment key={`${product.id}_${product.price}`}>
-                        <div className="col-6 d-flex mt-4">
-                          <div className='cartitemimage'><img src={product.image} alt="" /></div>
-                          <div className='py-4 d-flex flex-column'>
-                            <p className='m-0 productnameincartpage'>{product.name}{product.category === "Frames" ? <>
-                            {product.price === 250 ? <span>(20 x 30)</span> : <span>(30 x 40)</span>}
-                            </> : <></>}</p>
-                            <p className='m-0 fw-normal' style={{ fontSize: '12px' }}>{product.category}</p>
+                      <div className="cartitem-card row w-100 mx-0" key={`${product.id}_${product.price}`}>
+                        <div className="col-6 d-flex cartitem-main">
+                          <div className='cartitemimage'>
+                            <img src={product.image} alt={product.name || ""} />
+                          </div>
+                          <div className='py-2 d-flex flex-column cartitem-info'>
+                            <div className='cartitem-title-row'>
+                              <div className='productnameincartpage'>
+                                {product.name}
+                                {product.category === "Frames" && (
+                                  product.price === 250 ? <span>(20 x 30)</span> : <span>(30 x 40)</span>
+                                )}
+                              </div>
+                              <span className='cartitem-inline-price'>{product.price}.00 EGP</span>
+                            </div>
+                            <span className='fw-normal' style={{ fontSize: '12px' }}>{product.category}</span>
                           </div>
                         </div>
-                        <div className="col-2 mt-4 pt-3 jc-end">{product.price}.00 EGP</div>
-                        <div className="col-2 mt-4 pt-3 text-center d-flex gap-3 fw-bold jc-end">
-                          <p className='p-2 cursor-pointer m-0' style={{ height: 40 }} onClick={() => increment(product, -1)}>-</p>
-                          <p className='p-2 m-0'>{product.quantity}</p>
-                          <p className='p-2 cursor-pointer m-0' style={{ height: 40 }} onClick={() => increment(product, 1)}>+</p>
+
+                        <div className="col-2 cartitem-qty text-center d-flex gap-3 fw-bold jc-end">
+                          <div className='cartitem-qty-controls'>
+                            <button className='p-2 cursor-pointer m-0' style={{ height: 40 }} onClick={() => increment(product, -1)} type="button">-</button>
+                            <span className='p-2 m-0'>{product.quantity}</span>
+                            <button className='p-2 cursor-pointer m-0' style={{ height: 40 }} onClick={() => increment(product, 1)} type="button">+</button>
+                          </div>
                         </div>
-                        <div className="col-2 mt-4 pt-3 jc-end">{product.price * product.quantity}.00 EGP</div>
-                      </React.Fragment>
+
+                        <div className="col-2 cartitem-total jc-end">
+                          <span>{product.price * product.quantity}.00 EGP</span>
+                        </div>
+
+                        <div className='cartitem-remove'>
+                          <button className='cart-remove-btn' onClick={() => removeItem(product)} type="button">Remove</button>
+                        </div>
+                      </div>
                     ))}
                   </div>
 
-                  <div className='w-100 d-flex align-items-end justify-content-center pe-5 mt-4 flex-column'>
-                    <p className='fw-bold fs-4 m-0'>Sub Total: {totalOrder + 45}.00 EGP</p>
-                    <div className='d-flex align-items-center mt-3 gap-3'>
-                      <Link to="/"><p className='m-0 text-decoration-underline fw-bold cursor-pointer'>Continue Shopping</p></Link>
-                      <button className='checkout fw-bold underline'>GO TO CHECKOUT</button>
+                <div className='cart-bottom'>
+           
+
+                  <div className='cart-summary'>
+                    <div className='cart-summary-row'>
+                      <span>Subtotal</span>
+                      <span>{totalOrder}.00 EGP</span>
                     </div>
+                    <div className='cart-summary-row'>
+                      <span>Shipping</span>
+                      <span>{shippingFee}.00 EGP</span>
+                    </div>
+                    <div className='cart-summary-total'>
+                      <span>Total</span>
+                      <span>{totalWithShipping}.00 EGP</span>
+                    </div>
+                    <p className='cart-summary-note'>Taxes and shipping calculated at checkout.</p>
+                    <Link to="/" className='cart-continue'>Continue Shopping</Link>
+                    <button className='checkout fw-bold underline'>GO TO CHECKOUT</button>
                   </div>
                 </div>
               </>
@@ -204,5 +255,10 @@ export default function Cart() {
         </div>
       </footer>
     </div>
+
+
+
+
+
   );
 }

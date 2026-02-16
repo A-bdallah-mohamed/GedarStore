@@ -1,9 +1,13 @@
 {
-  "editor.quickSuggestions": true,
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on",
+    "other": "on"
+  },
   "editor.suggestOnTriggerCharacters": true,
   "editor.inlineSuggest.enabled": true,
   "editor.parameterHints.enabled": true,
-  "editor.wordBasedSuggestions": true,
+  "editor.wordBasedSuggestions": "matchingDocuments",
   "github.copilot.inlineSuggest.enable": true,
   "github.copilot.enable": true
 }

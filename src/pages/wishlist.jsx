@@ -62,6 +62,8 @@ const wishlistitems = products.filter((p) =>
     const newWishlist = (userData.wishlist || []).filter(item => item.id !== productId);
     const userDocRef = doc(db, "Users", userId);
     await updateDoc(userDocRef, { ...userData, wishlist: newWishlist });
+        console.log('newWishlist:', newWishlist); 
+
     setWishlist(prev => prev.filter(item => item.id !== productId));
   };
 
@@ -70,7 +72,7 @@ const wishlistitems = products.filter((p) =>
           <Header />
     
     <div className="page-content" style={{ marginTop: "120px", paddingTop: "50px" }}>
-      <div className="maxw minw">
+      <div className="maxw minw px-5">
         <h2 style={{ fontWeight: 600, marginBottom: "20px" }}>My Wishlist</h2>
 
         {loading ? (
@@ -101,7 +103,7 @@ const wishlistitems = products.filter((p) =>
     :  `LE ${item.price}`}
 </p>                    <button
                       className="btn btn-outline-danger btn-sm mt-auto"
-onClick={removeFromWishlist(item.id)}
+onClick={()=>removeFromWishlist(item.id)}
                     >
                       Remove
                     </button>
