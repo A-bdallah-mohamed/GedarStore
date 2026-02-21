@@ -1,8 +1,7 @@
-import { auth } from "../firebase/firebaseconfig";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseconfig";
 
-export const addtocart = async (product, e, user, activesize) => {
+export const addtocart = async (product, e, user, activesize,quantity) => {
   // Determine product price safely
   let productPrice = product.price; // default
   if (product.category === "Frames") {
@@ -14,6 +13,12 @@ export const addtocart = async (product, e, user, activesize) => {
     }
   }
 
+  const safeQuantity = Math.max(1, Number(quantity) || Number(product?.quantity) || 1);
+  const itemsToAdd = Array.from({ length: safeQuantity }, () => ({
+    id: product.id,
+    price: productPrice,
+  }));
+
   if (user) {
     // Firebase user cart
     const q = query(collection(db, "Users"), where("User", "==", user.email));
@@ -24,21 +29,20 @@ export const addtocart = async (product, e, user, activesize) => {
     const userData = userDoc.data();
     const userId = userDoc.id;
 
-    const newCart = userData.cart
-      ? [...userData.cart, { id: product.id, price: productPrice }]
-      : [{ id: product.id, price: productPrice }];
+    const existingCart = Array.isArray(userData.cart) ? userData.cart : [];
+    const newCart = [...existingCart, ...itemsToAdd];
 
     const userDocRef = doc(db, "Users", userId);
     await updateDoc(userDocRef, { ...userData, cart: newCart });
 
-    console.log("Product added to Firebase:", { id: product.id, price: productPrice });
+    console.log("Product added to Firebase:", { id: product.id, price: productPrice, quantity: safeQuantity });
   } else {
     // LocalStorage cart
     let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push({ id: product.id, price: productPrice });
+    cart = [...cart, ...itemsToAdd];
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    console.log("Product added to localStorage:", { id: product.id, price: productPrice });
+    console.log("Product added to localStorage:", { id: product.id, price: productPrice, quantity: safeQuantity });
   }
 
   // Visual feedback for "added" div

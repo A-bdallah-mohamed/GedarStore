@@ -159,7 +159,7 @@ export default function Cart() {
                     <h5 className='m-0'>Congratulations! You unlocked free shipping.</h5>
                   )}
 
-                  <div className='free-ship-pill'>GETTING STARTED</div>
+                  {/* <div className='free-ship-pill'>GETTING STARTED</div> */}
 
                   <div className='w-100 d-flex align-items-center justify-content-between gap-2 free-ship-scale'>
                     <p className='m-0 fw-bold'>0 EGP</p>
@@ -188,7 +188,7 @@ export default function Cart() {
                               <div className='productnameincartpage'>
                                 {product.name}
                                 {product.category === "Frames" && (
-                                  product.price === 250 ? <span>(20 x 30)</span> : <span>(30 x 40)</span>
+                                  parseInt(product.price) === 350 ? <span>(30 x 40)</span> : <span>(20 x 30)</span>
                                 )}
                               </div>
                               <span className='cartitem-inline-price'>{product.price}.00 EGP</span>
@@ -234,7 +234,24 @@ export default function Cart() {
                     </div>
                     <p className='cart-summary-note'>Taxes and shipping calculated at checkout.</p>
                     <Link to="/" className='cart-continue'>Continue Shopping</Link>
-                    <button className='checkout fw-bold underline'>GO TO CHECKOUT</button>
+                    <Link
+                      to="/Checkout"
+                      state={{
+                        cartItems: cartItems.map((item) => ({
+                          productId: item.id,
+                          id: item.id,
+                          name: item.name,
+                          price: item.price,
+                          quantity: item.quantity,
+                          size: item.size || null,
+                          category: item.category || "",
+                          imageUrl: item.image || item.imageUrl || "",
+                        })),
+                      }}
+                      className='checkout fw-bold underline d-flex align-items-center justify-content-center text-decoration-none'
+                    >
+                      GO TO CHECKOUT
+                    </Link>
                   </div>
                 </div>
               </>

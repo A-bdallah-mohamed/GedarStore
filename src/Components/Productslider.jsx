@@ -16,18 +16,17 @@ import {addtocart} from "../GlobalStates/AddToCart";
 import {addToWishlist} from "../GlobalStates/AddToWishlist";
 
 import { useNavigate } from 'react-router-dom';
-export default function Productslider({products,category}) {
+export default function Productslider({products,category,title}) {
 
 const navigate = useNavigate();
 
   const sliderwrapper = useRef(null)
-  const slugify = (str) =>
-  str
+const slugify = (str = "") =>
+  String(str)
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, "-")    
-    .replace(/[^a-z0-9-]/g, ""); 
-
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
 
  const scrollswiper = (amount) => {
     sliderwrapper.current.scrollBy({
@@ -64,14 +63,17 @@ const visuals = (e)=>{
   return (
     <div className=' slider  d-flex flex-column mt-3'>
       <div className='w-100 d-flex justify-content-between px-4  maxw ' >
-      <h1>{category}</h1>
-      <div className='d-flex align-items-center gap-3'>
-        <div className='d-flex align-items-center gap-2'>
+      <h1>{title || category}</h1>
+      <div className='slider-controls d-flex align-items-center gap-3'>
+        <div className='slider-arrows d-flex align-items-center gap-2'>
           <button className='pagination'  onClick={()=>scrollswiper(-1000)}><IoIosArrowBack /></button>      
           <button className='pagination' onClick={()=>scrollswiper(1000)}><IoIosArrowForward /></button>
 
         </div>
+<Link to={`/category/${slugify(category)}`}>
       <button className='m-0  border-0 bg-transparent'>View all</button>
+              </Link>
+
       </div>
       </div>
         <div className='Productslider maxw ' ref={sliderwrapper}>

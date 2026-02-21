@@ -1,5 +1,5 @@
 import React,{useState,useEffect,createContext, useContext} from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ProductPage from "./pages/ProductPage";
 import Dashboard from "./pages/Dashboard";
 import Mainpage from "./pages/Mainpage";
@@ -27,13 +27,26 @@ const productsglobalcontext = createContext()
 export const useGlobal = () => useContext(productsglobalcontext)
 
 function App() {
-  const slugify = (str) =>
-  str
+const slugify = (str = "") =>
+  String(str)
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, "-")    
-    .replace(/[^a-z0-9-]/g, ""); 
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
 
+const sortByOrder = (arr = []) =>
+  [...arr].sort((a, b) => {
+    const orderA = Number(a?.order) || 0;
+    const orderB = Number(b?.order) || 0;
+
+    if ((orderA >= 1) !== (orderB >= 1)) {
+      return (orderB >= 1) - (orderA >= 1);
+    }
+
+    return orderA - orderB;
+  });
+
+    
 const [loading, setLoading] = useState(true);
 const [users,setusers] = useState([])
 
@@ -45,7 +58,7 @@ const loadData = async () => {
     getDocs(collection(db, "Banners")),
   ]);
 
-  setproducts(productsSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+  setproducts(sortByOrder(productsSnap.docs.map(d => ({ id: d.id, ...d.data() }))));
   setbanners(bannersSnap.docs.map(d => ({ id: d.id, ...d.data() }))); 
 
   setLoading(false);  
@@ -72,13 +85,23 @@ useEffect(() => {
 }, [loading]);
 
 
+const [categories, setcategories] = useState([]);
 
+const getcategories = async () => {
+  const snap = await getDocs(collection(db, "categories"));
+  const arr = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  console.log(categories);
+
+  setcategories(arr);
+    console.log(categories);
+
+};
 
 
 
   return (
-<productsglobalcontext.Provider value={{ products, banners, users }}>
-             <ScrollToTop />
+<productsglobalcontext.Provider value={{ products, banners, users, categories }}>
+               <ScrollToTop />
                  <div className={`startinganimation ${products.length > 0 ? '' : 'active'}`}>
                 <div className={`imgcontainer ${products.length > 0 ? '' : 'active'}`}>
         <img src={logo} alt="" />
@@ -92,7 +115,8 @@ useEffect(() => {
         <Route path="/Login" element={<Login />}  />
                 <Route path="/Cart" element={<Cart />}  />
                 <Route path="/Checkout" element={<Checkout />}  />
-                <Route path="/category/:name" element={<CategoryPage />} />
+        <Route path="/category" element={<CategoryPage />} />
+        <Route path="/category/:categorySlug" element={<CategoryPage />} />
                 <Route path="/custom" element={<CustomCategory />} />
                 <Route path="/Profile" element={<Profile />} />
   {/* new routes */}

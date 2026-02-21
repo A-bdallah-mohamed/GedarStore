@@ -205,6 +205,7 @@ useEffect(() => {
 <div style={{ width: '100%'}} className='px-5 d-flex flex-column gap-3'> 
 {hasLetters &&
   searchresults.map((product) => (
+    <Link to={`/products/${product.name.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`} className='navlink'>
 <div className='searchresult'>
   <img src={product.image} alt="" />
   <div className='d-flex flex-column py-2'>
@@ -214,6 +215,7 @@ useEffect(() => {
     <p className='m-0 text-muted'>EGP {product.price}</p>
   </div>
 </div>
+ </Link>
   ))
 }
 

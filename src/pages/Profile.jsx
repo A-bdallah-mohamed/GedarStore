@@ -364,6 +364,12 @@ export default function Profile() {
                               {order.total} EGP
                             </strong>
                             <br />
+                            <small className="text-muted d-block">
+                              {order.paymentMethod?.toUpperCase() || "N/A"}
+                            </small>
+                            <small className="text-muted d-block">
+                              Payment: {order.paymentStatus?.toUpperCase() || "PENDING"}
+                            </small>
                             <small className="text-muted">
                               {isOpen ? "Hide details" : "View details"}
                             </small>

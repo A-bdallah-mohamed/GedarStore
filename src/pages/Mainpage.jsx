@@ -15,6 +15,20 @@ export default function Mainpage() {
   const { banners } = useGlobal();
 const mainbanner = banners.find(b => b.name === "Main")
 const [categories,setcategories] = useState([])
+const slugify = (str = "") =>
+  String(str)
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+
+const stickersCategory =
+  categories.find((cat) => slugify(cat).includes("sticker")) || categories[0] || "stickers";
+const framesCategory =
+  categories.find((cat) => slugify(cat).includes("frame")) || categories[1] || categories[0] || "frames";
+
+const stickersLink = `/category/${slugify(stickersCategory)}`;
+const framesLink = `/category/${slugify(framesCategory)}`;
 
 useEffect(() => {
  if (products.length > 0) {
@@ -81,21 +95,21 @@ function scrollvh() {
         <p className='fs-1 text-black'>Categories</p>
         <div className="w-100 d-block d-md-none px-2">
           <CategorySlider banners={[
-            { img: banners[2]?.img, title: banners[2]?.title, link: "/category/stickers" },
-            { img: banners[7]?.img, title: banners[7]?.title, link: "/category/frames" },
+            { img: banners[2]?.img, title: banners[2]?.title, link: stickersLink },
+            { img: banners[7]?.img, title: banners[7]?.title, link: framesLink },
             { img: banners[4]?.img, title: "Customize Your Own", link: "/custom" },
           ]} />
         </div>
         <div className="maxw d-none d-md-block">
           <div className="row">
-            <div className="col-4">
-              <Link to="/category/stickers" className="catimgcontainer navlink">
+            <div className="col-4" >
+              <Link to={stickersLink} className="catimgcontainer navlink">
                 <img src={banners[2]?.img} alt="" />
                 <p>{banners[2]?.title}</p>
               </Link>
             </div>
             <div className="col-4">
-              <Link to="/category/frames" className="catimgcontainer navlink">
+              <Link to={framesLink} className="catimgcontainer navlink">
                 <img src={banners[7]?.img} alt="" />
                 <p>{banners[7]?.title}</p>
               </Link>
@@ -120,6 +134,8 @@ function scrollvh() {
       <a href={banners[1]?.link}>
       <div className="instaimgcontainer">
     <img src={banners[1]?.img} alt="" />
+        <FaInstagram className='instagramlogo'/>
+
   </div>
 </a>
   
@@ -130,6 +146,8 @@ function scrollvh() {
 
       <div className="instaimgcontainer">
     <img src={banners[0]?.img} alt="" />
+        <FaInstagram className='instagramlogo'/>
+
   </div>
 
 </a>
@@ -141,6 +159,8 @@ function scrollvh() {
 <a href={banners[6]?.link}>
       <div className="instaimgcontainer">
     <img src={banners[6]?.img} alt="" />
+        <FaInstagram className='instagramlogo'/>
+
   </div>
 </a>
 
@@ -152,6 +172,7 @@ function scrollvh() {
 <a href={banners[3]?.link}>
       <div className="instaimgcontainer rounded-top-end">
     <img src={banners[3]?.img} alt="" />
+    <FaInstagram className='instagramlogo'/>
   </div>
 </a>
 
